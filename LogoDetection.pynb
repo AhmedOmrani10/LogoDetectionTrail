@@ -47,7 +47,7 @@ for _, c in enumerate(contours):
         boundRect = cv2.boundingRect(contoursPoly)
 
         # Store rectangles in list:
-        rectanglesList.append(boundRect)
+        rectanglesList.append({boundRect, currentArea})
 
         # Get the dimensions of the bounding rect:
         rectX = boundRect[0]
