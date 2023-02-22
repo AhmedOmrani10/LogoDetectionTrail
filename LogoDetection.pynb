@@ -1,6 +1,8 @@
+# %%
 import cv2
 import numpy as np
-
+import matplotlib.pyplot as plt
+# %%
 # Read logo image
 logoFileName = "images/Logo.jpg"
 img = cv2.imread(logoFileName)
@@ -8,6 +10,7 @@ img = cv2.imread(logoFileName)
 alpha = 0.4
 beta = -10
 
+# %%
 # Reduce contrast & brightness
 result = cv2.addWeighted(img,alpha,np.zeros(img.shape,img.dtype),0,beta)
 # Convert to grayscale image
@@ -15,10 +18,13 @@ gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
 # Convert to binary image
 ret,thresh = cv2.threshold(gray,70,255,0)
 # Display the logo
-cv2.imshow("AI",thresh)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+# as opencv loads in BGR format by default, we want to show it in RGB.
+#plt.show()
+#cv2.imshow("AI",thresh)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+# %%
 # Find objects (All objects in the logo)
 contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -54,8 +60,14 @@ for _, c in enumerate(contours):
         cv2.rectangle(img, (int(rectX), int(rectY)),
                    (int(rectX + rectWidth), int(rectY + rectHeight)), color, 2 )
 
-cv2.imshow("Logo detection", img)
-cv2.waitKey(0)
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+#cv2.imshow("Logo detection", img)
+#cv2.waitKey(0)
 
-print("The logo is composed by " + str(len(rectanglesList)) + "objects")
+print("The logo is composed by " + str(len(rectanglesList)) + " objects")
 
+# %% Find the largest bounding box area
+print(type(rectanglesList))
+print(rectanglesList)
+
+# %%
