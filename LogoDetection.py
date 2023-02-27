@@ -5,15 +5,16 @@ import matplotlib.pyplot as plt
 from operator import itemgetter
 # %%
 # Read logo image
-logoFileName = "images/Logo-ConvertImageH.jpg"
+logoFileName = "images/Real3.jpg"
 img = cv2.imread(logoFileName)
 # Set contrast & brightness
-alpha = 0.4
-beta = -10
+#alpha = 0.4
+#beta = -10
 
 # %%
 # Reduce contrast & brightness
-result = cv2.addWeighted(img,alpha,np.zeros(img.shape,img.dtype),0,beta)
+#result = cv2.addWeighted(img,alpha,np.zeros(img.shape,img.dtype),0,beta)
+result = img.copy()
 # Convert to grayscale image
 gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
 # Convert to binary image
@@ -80,9 +81,10 @@ print(orderedArea)
 imgCopy2 = img.copy()
 color = (0, 255, 0)
 indObj = 1
-cv2.rectangle(imgCopy2, (int(orderedArea[indObj][0]), int(orderedArea[indObj][1])),
-                   (int(orderedArea[indObj][0] + orderedArea[indObj][2]), int(orderedArea[indObj][1] + orderedArea[indObj][3])), color, 2 )
-plt.imshow(cv2.cvtColor(imgCopy2, cv2.COLOR_BGR2RGB))
+if orderedArea.__len__() > 0:
+    cv2.rectangle(imgCopy2, (int(orderedArea[indObj][0]), int(orderedArea[indObj][1])),
+                    (int(orderedArea[indObj][0] + orderedArea[indObj][2]), int(orderedArea[indObj][1] + orderedArea[indObj][3])), color, 2 )
+    plt.imshow(cv2.cvtColor(imgCopy2, cv2.COLOR_BGR2RGB))
 # %%
 print(orderedArea[0][0])
 plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
