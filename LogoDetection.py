@@ -10,13 +10,20 @@ beta = -10
 print("Start")
 
 while True:
-    imgResponse = urllib.request.urlopen("http://192.168.154.38/capture?")
+    rectanglesList = []
+    imgResponse = urllib.request.urlopen("http://192.168.43.107/capture?")
     print("s")
     imgNp = np.array(bytearray(imgResponse.read()),dtype=np.uint8)
     frame = cv.imdecode(imgNp,-1)
     result = cv.addWeighted(frame, alpha, np.zeros(frame.shape, frame.dtype), 0, beta)
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    ret, thresh = cv.threshold(gray, 70, 255, 0)
+    # Find the minimum and maximum pixel values of the grayscale image
+    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(gray)
+    alphaG = 120
+    betaG = -min_val
+    adjusted = cv.convertScaleAbs(gray, alpha=alpha, beta=beta)
+
+    ret, thresh = cv.threshold(adjusted, 70, 255, 0)
     contours, hierarchy = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
 
@@ -25,7 +32,7 @@ while True:
         # Get blob area:
         currentArea = cv.contourArea(c)
         # Set a min area threshold:
-        minArea = 25
+        minArea = 2
 
         if currentArea > minArea:
             # Approximate the contour to a polygon:
@@ -48,7 +55,7 @@ while True:
             color = (0, 0, 255)
             cv.rectangle(frame, (int(rectX), int(rectY)),
                           (int(rectX + rectWidth), int(rectY + rectHeight)), color, 2)
-    cv.imshow('Window',thresh)
+    cv.imshow('Window',frame)
     print("The logo is composed by " + str(len(rectanglesList)) + " objects")
     key = cv.waitKey(500)
     if key == (ord('q')):
