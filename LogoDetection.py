@@ -19,7 +19,7 @@ while True:
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     # Find the minimum and maximum pixel values of the grayscale image
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(gray)
-    alphaG = 120
+    alphaG = 2
     betaG = -min_val
     adjusted = cv.convertScaleAbs(gray, alpha=alpha, beta=beta)
 
